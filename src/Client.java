@@ -7,6 +7,7 @@ public class Client {
 	String[] opnd;
 	
 	
+	
 	public int getHost_name() {
 		return host_name;
 	}
@@ -38,7 +39,15 @@ public class Client {
 
 
 	public void setOper(String oper) {
+		
+		if(oper.equals("Register") || oper.equals("Lookup"))
+		{
 		this.oper = oper;
+		}
+		else
+		{
+			System.out.println("not a valid operator");
+		}
 	}
 
 
@@ -97,7 +106,7 @@ public static void main(String[] args)
 		System.out.print(client.getOpnd()[i]+ " ");
 		}
 		System.out.print("\n");
-		//System.out.println(temp[0]);
+		
 		}
 		
 	}
