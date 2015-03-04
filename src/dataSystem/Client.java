@@ -1,3 +1,6 @@
+package dataSystem;
+import java.net.*;
+
 
 public class Client {
 	private
@@ -65,7 +68,7 @@ public class Client {
 
 public static void main(String[] args)
 	{
-		if (args.length<4)
+		if (args.length<5)
 		{
 			System.out.println("invalid usage. try: java Client <host_name> <port_number> <oper> <opnd>* ");
 		}

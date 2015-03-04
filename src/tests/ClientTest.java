@@ -1,6 +1,10 @@
+package tests;
+import dataSystem.*;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import dataSystem.Client;
 
 
 public class ClientTest {
