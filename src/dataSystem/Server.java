@@ -14,7 +14,7 @@ public class Server {
 	private int bufferMAXSize;
 	
 	
-	Server(int portNumber) throws SocketException{
+	public Server(int portNumber) throws SocketException{
 		this.portNumber=portNumber;
 		nPlates=0;
 		socket = new DatagramSocket(portNumber);
@@ -92,9 +92,7 @@ public class Server {
 				{
 					System.out.println("ups!");
 					return false;
-					
 				}
-
 			}
 			else{
 				System.out.println("Wrong sintax!!");

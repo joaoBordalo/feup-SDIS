@@ -4,6 +4,8 @@ public class Owner {
 	
 	private String name;
 	private Plate plate;
+	
+	
 	public String getName() {
 		return name;
 	}

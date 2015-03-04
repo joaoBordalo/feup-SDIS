@@ -3,11 +3,11 @@ import java.net.*;
 
 
 public class Client {
-	private
-	int host_name;
-	int port_number;
-	String oper;
-	String[] opnd;
+	
+	private int host_name;
+	private int port_number;
+	private String oper;
+	private String opnd[];
 	
 	
 	
