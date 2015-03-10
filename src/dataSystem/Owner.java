@@ -5,7 +5,11 @@ public class Owner {
 	private String name;
 	private Plate plate;
 	
-	
+	public Owner(String name, Plate plate)
+	{
+		this.name=name;
+		this.plate=plate;
+	}
 	public String getName() {
 		return name;
 	}

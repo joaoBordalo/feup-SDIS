@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.*;
 
 
-public class Server {
+public class Server implements Parser {
 	
 	private int nPlates;
 	private Vector<Owner> owners;
@@ -21,7 +21,6 @@ public class Server {
 		bufferMAXSize=512;
 		//abrir socket
 	}
-	
 	public int getBufferMAXSize() {
 		return bufferMAXSize;
 	}
@@ -104,13 +103,41 @@ public class Server {
 		}	
 	}
 	
-	public int register(char[] plate, String onwer)
+	//assuming that parse has been done 
+	public int register(String plate, String owner)
 	{
-		return 0;
+		if(!findOwner(owner))
+		{
+		Plate newPlate= new Plate(plate);
+		Owner newOwner= new Owner(owner,newPlate);
+		owners.add(newOwner);// same as push_back in c++
+		return nPlates++;
+		}else
+			return -1;
 	}
 	
+	private boolean findOwner(String owner) {
+		
+		for (Owner ownerIt : owners) {
+			if(ownerIt.getName()==owner)
+				return true;
+		}
+		return false;
+	}
 	
-	public static void main(String[] args) throws NumberFormatException, IOException{
+	public String lookUp(String plate)
+	{
+		
+		for (Owner owner : owners) {
+			if(owner.getPlate().getPlate()==plate)
+			{
+				return owner.getName();
+			}
+		}
+		return "NOT_FOUND";
+	}
+	
+	public void main(String[] args) throws NumberFormatException, IOException{
 		
 		if (args.length<4)
 		{
@@ -142,26 +169,26 @@ public class Server {
 				System.out.println("Waiting for Client");
 				server.getSocket().receive(packet);
 				
-				//processing Client's anwser
+				//TODO processing Client's anwser and do the parse
+				
 				
 				String plate = null;
+				String owner = null;
 				if(server.validatePlate(plate))
 				{
-					Plate rightPlate = new Plate(plate);
+					//TODO checks if is register
+					int numberRegisted=register(plate, owner);
+					//TODO send anwser to client
+					
+					//TODO checks if is lookup
+					String Owner =lookUp(plate);
+					//TODO send anwser to client
+					
+					
 				}
 				
-				//processar conteudo do cliente
-				
 				a.close();
-			}
-			
-		
-			
-		 
-		
-		
-		
-		
+			}	
 	}
 }
 
