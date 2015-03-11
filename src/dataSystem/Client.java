@@ -1,23 +1,27 @@
 package dataSystem;
+import java.io.IOException;
 import java.net.*;
+
+
 
 
 public class Client {
 	
-	private int host_name;
+	private String host_name;
 	private int port_number;
-	private String oper;
-	private String opnd[];
+	private int bufferMAXSize=512;
 	
 	
-	
-	public int getHost_name() {
+	public int getBufferMAXSize(){
+		return bufferMAXSize;
+	}
+	public String getHost_name() {
 		return host_name;
 	}
 
 
 
-	public void setHost_name(int host_name) {
+	public void setHost_name(String host_name) {
 		this.host_name = host_name;
 	}
 
@@ -34,51 +38,18 @@ public class Client {
 	}
 
 
-
-	public String getOper() {
-		return oper;
-	}
-
-
-
-	public void setOper(String oper) {
-		
-		if(oper.equals("Register") || oper.equals("Lookup"))
-		{
-		this.oper = oper;
-		}
-		else
-		{
-			System.out.println("not a valid operator");
-		}
-	}
-
-
-
-	public String[] getOpnd() {
-		return opnd;
-	}
-
-
-
-	public void setOpnd(String[] opnd) {
-		this.opnd = opnd;
-	}
-
-
-public static void main(String[] args)
+public static void main(String[] args) throws IOException
 	{
 		if (args.length<5)
 		{
 			System.out.println("invalid usage. try: java Client <host_name> <port_number> <oper> <opnd>* ");
+			return;
 		}
-		else
-		{
+		
 			Client client = new Client();
 			
-			client.setHost_name(Integer.parseInt(args[0].toString()));
+			client.setHost_name(args[0]);
 			client.setPort_number(Integer.parseInt(args[1].toString()));
-			client.setOper(args[2].toString());
 			
 		 String[] temp = new String[args.length-3];
 		 
@@ -86,10 +57,6 @@ public static void main(String[] args)
 		{
 			temp[i]=args[3+i].toString();
 		}
-	 
-		client.setOpnd(temp);
-			
-		
 		
 		System.out.print("Client Debug\n");
 		
@@ -100,18 +67,35 @@ public static void main(String[] args)
 		System.out.println(client.getPort_number());
 		
 		System.out.print("Operation:");
-		System.out.println(client.getOper());
 		
 		System.out.print("Operation Args:");
-		
-		for(int i=0; i<temp.length; i++)
-		{
-		System.out.print(client.getOpnd()[i]+ " ");
-		}
 		System.out.print("\n");
 		
-		}
 		
+		DatagramSocket socket = new DatagramSocket();
+		byte[] sentBuffer = new byte[client.getBufferMAXSize()];
+		String msg;
+		msg = new String(args[4]);
+		for(int i=5;i<args.length;i++)
+		{
+			msg += " " + args[i];
+		}
+		sentBuffer = msg.getBytes();
+		InetAddress address = InetAddress.getByName(client.getHost_name());
+		DatagramPacket packet = new DatagramPacket(sentBuffer, client.getBufferMAXSize(),address,client.getPort_number());
+		socket.send(packet);
+		
+		
+		//getting anwser
+		
+		byte[] rbuf = new byte[client.getBufferMAXSize()];
+		packet = new DatagramPacket(rbuf, client.getBufferMAXSize());
+		socket.receive(packet);
+
+		String received = new String(packet.getData());
+		System.out.println("Messaged recieved: " + received);
+		socket.close();
+		return;
 	}
 
 

@@ -4,8 +4,10 @@ import java.util.Vector;
 import java.io.IOException;
 import java.net.*;
 
+import dataSystem.Parser.Request;
 
-public class Server implements Parser {
+
+public class Server {
 	
 	private int nPlates;
 	private Vector<Owner> owners;
@@ -142,13 +144,17 @@ public class Server implements Parser {
 		if (args.length<4)
 		{
 			System.out.println("invalid usage. try: java Server <port_number>  ");
+			return;
 		}
 		// TODO verificar argumentos incluindo se no args[2] é um int
-		else
-		{
+		
 			Server server = new Server(Integer.parseInt(args[2].toString()));
+			byte[] receiveBuffer = new byte[server.getBufferMAXSize()];
+			DatagramPacket rPacket = new DatagramPacket(receiveBuffer, server.getBufferMAXSize());
 			
-			// entrar em loop à espera de resposta do cliente
+			System.out.println("Waiting for Client");
+			server.getSocket().receive(rPacket);
+			// waiting for client anwser
 			while(true)
 			{
 				Scanner a = new Scanner(System.in);
@@ -158,38 +164,60 @@ public class Server implements Parser {
 				{
 					//closing socket
 					a.close();
-					server.getSocket().close();
-					System.out.println("Existing");
+					System.out.println("Exiting");
 					break;
 				}
 				
-				byte[] receiveBuffer = new byte[server.getBufferMAXSize()];
-				DatagramPacket packet = new DatagramPacket(receiveBuffer, server.getBufferMAXSize());
-				
-				System.out.println("Waiting for Client");
-				server.getSocket().receive(packet);
-				
-				//TODO processing Client's anwser and do the parse
 				
 				
-				String plate = null;
-				String owner = null;
+				//processing Client's anwser and do the parse
+				String request= new String(rPacket.getData());
+				
+				Parser parsed= new Parser(request);
+				String plate = parsed.getOperands().get(0);
+				System.out.println(parsed.getOperator().toString());
+				
+				
+				String msg= new String(parsed.getOperator().toString());
+				
+				for(int i = 0; i< parsed.getOperands().size(); i++)
+				{
+					msg+= " " + parsed.getOperands().get(i);
+				}
+				
+				msg+= ": ";
+				
 				if(server.validatePlate(plate))
 				{
-					//TODO checks if is register
-					int numberRegisted=register(plate, owner);
-					//TODO send anwser to client
 					
-					//TODO checks if is lookup
-					String Owner =lookUp(plate);
-					//TODO send anwser to client
-					
+					switch (parsed.getOperator())
+					{
+					case REGISTER:
+						String owner = parsed.getOperands().get(1);
+						int numberRegisted=register(plate, owner);
+						msg+= numberRegisted;
+						break;
+					case LOOKUP:
+						String Owner =lookUp(plate);
+						msg+= Owner;
+						default:
+							msg+= "ERROR";
+							break;
+					}
 					
 				}
 				
+						DatagramPacket sPacket = new DatagramPacket(msg.getBytes(), server.getBufferMAXSize());
+						socket.send(sPacket);
+
 				a.close();
+				
 			}	
-	}
+			
+			server.getSocket().close();
+			return;
+			
+	
 }
 
 }
