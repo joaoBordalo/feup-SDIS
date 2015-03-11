@@ -151,6 +151,8 @@ public class Server {
 			Server server = new Server(Integer.parseInt(args[2].toString()));
 			byte[] receiveBuffer = new byte[server.getBufferMAXSize()];
 			DatagramPacket rPacket = new DatagramPacket(receiveBuffer, server.getBufferMAXSize());
+			System.out.println(server.getSocket().getLocalPort());
+			//System.out.println(se;
 			
 			System.out.println("Waiting for Client");
 			server.getSocket().receive(rPacket);
@@ -207,8 +209,8 @@ public class Server {
 					
 				}
 				
-						DatagramPacket sPacket = new DatagramPacket(msg.getBytes(), server.getBufferMAXSize());
-						socket.send(sPacket);
+				DatagramPacket sPacket = new DatagramPacket(msg.getBytes(), server.getBufferMAXSize(),rPacket.getAddress(),rPacket.getPort());
+				socket.send(sPacket);
 
 				a.close();
 				
