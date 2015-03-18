@@ -48,14 +48,14 @@ public static void main(String[] args) throws IOException
 		
 			Client client = new Client();
 			
-			client.setHost_name(args[0]);
-			client.setPort_number(Integer.parseInt(args[1].toString()));
+			client.setHost_name(args[2]);
+			client.setPort_number(Integer.parseInt(args[3].toString()));
 			
-		 String[] temp = new String[args.length-3];
+		 String[] temp = new String[args.length-4];
 		 
 		for(int i=0; i<temp.length; i++)
 		{
-			temp[i]=args[3+i].toString();
+			temp[i]=args[4+i].toString();
 		}
 		
 		System.out.print("Client Debug\n");
@@ -66,31 +66,38 @@ public static void main(String[] args) throws IOException
 		System.out.print("Port Number:");
 		System.out.println(client.getPort_number());
 		
-		System.out.print("Operation:");
+		System.out.println("Operation:");
 		
 		System.out.print("Operation Args:");
 		System.out.print("\n");
 		
 		
 		DatagramSocket socket = new DatagramSocket();
-		byte[] sentBuffer = new byte[client.getBufferMAXSize()];
+		
 		String msg;
 		msg = new String(args[4]);
 		for(int i=5;i<args.length;i++)
 		{
 			msg += " " + args[i];
 		}
+		System.out.println(msg);
+		byte[] sentBuffer = new byte[msg.getBytes().length];
 		sentBuffer = msg.getBytes();
 		InetAddress address = InetAddress.getByName(client.getHost_name());
-		DatagramPacket packet = new DatagramPacket(sentBuffer, client.getBufferMAXSize(),address,client.getPort_number());
+		DatagramPacket packet = new DatagramPacket(sentBuffer, sentBuffer.length,address.getLoopbackAddress(),client.getPort_number());
+		System.out.println(address.getHostAddress());
+		System.out.println("criei datagram");
+		System.out.println(packet.getSocketAddress().toString());
 		socket.send(packet);
-		
+		System.out.println("enviei");
 		
 		//getting anwser
 		
 		byte[] rbuf = new byte[client.getBufferMAXSize()];
-		packet = new DatagramPacket(rbuf, client.getBufferMAXSize());
+		packet = new DatagramPacket(rbuf, rbuf.length);
 		socket.receive(packet);
+		System.out.println("recebi");
+		
 
 		String received = new String(packet.getData());
 		System.out.println("Messaged recieved: " + received);

@@ -140,7 +140,7 @@ public class Server {
 	
 	public static void main(String[] args) throws NumberFormatException, IOException{
 		
-		if (args.length<4)
+		if (args.length<3)
 		{
 			System.out.println("invalid usage. try: java Server <port_number>  ");
 			return;
@@ -149,15 +149,18 @@ public class Server {
 		
 			Server server = new Server(Integer.parseInt(args[2].toString()));
 			byte[] receiveBuffer = new byte[server.getBufferMAXSize()];
-			DatagramPacket rPacket = new DatagramPacket(receiveBuffer, server.getBufferMAXSize());
+			DatagramPacket rPacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
 			System.out.println(server.getSocket().getLocalPort());
-			//System.out.println(se;
+			
 			
 			System.out.println("Waiting for Client");
-			server.getSocket().receive(rPacket);
+			
+			
 			// waiting for client anwser
 			while(true)
 			{
+				
+				
 				Scanner a = new Scanner(System.in);
 				String input = a.nextLine();
 				//to close aplication
@@ -169,8 +172,8 @@ public class Server {
 					break;
 				}
 				
-				
-				
+				server.getSocket().receive(rPacket);
+				System.out.println("Recebi, a fazer parcing");
 				//processing Client's anwser and do the parse
 				String request= new String(rPacket.getData());
 				
@@ -208,7 +211,7 @@ public class Server {
 					
 				}
 				
-				DatagramPacket sPacket = new DatagramPacket(msg.getBytes(), server.getBufferMAXSize(),rPacket.getAddress(),rPacket.getPort());
+				DatagramPacket sPacket = new DatagramPacket(msg.getBytes(), msg.getBytes().length,rPacket.getAddress(),rPacket.getPort());
 				server.getSocket().send(sPacket);
 
 				a.close();
