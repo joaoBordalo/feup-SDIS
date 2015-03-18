@@ -4,7 +4,6 @@ import java.util.Vector;
 import java.io.IOException;
 import java.net.*;
 
-import dataSystem.Parser.Request;
 
 
 public class Server {
@@ -139,7 +138,7 @@ public class Server {
 		return "NOT_FOUND";
 	}
 	
-	public void main(String[] args) throws NumberFormatException, IOException{
+	public static void main(String[] args) throws NumberFormatException, IOException{
 		
 		if (args.length<4)
 		{
@@ -196,11 +195,11 @@ public class Server {
 					{
 					case REGISTER:
 						String owner = parsed.getOperands().get(1);
-						int numberRegisted=register(plate, owner);
+						int numberRegisted=server.register(plate, owner);
 						msg+= numberRegisted;
 						break;
 					case LOOKUP:
-						String Owner =lookUp(plate);
+						String Owner =server.lookUp(plate);
 						msg+= Owner;
 						default:
 							msg+= "ERROR";
@@ -210,7 +209,7 @@ public class Server {
 				}
 				
 				DatagramPacket sPacket = new DatagramPacket(msg.getBytes(), server.getBufferMAXSize(),rPacket.getAddress(),rPacket.getPort());
-				socket.send(sPacket);
+				server.getSocket().send(sPacket);
 
 				a.close();
 				
