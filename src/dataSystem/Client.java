@@ -40,22 +40,27 @@ public class Client {
 
 public static void main(String[] args) throws IOException
 	{
-		if (args.length<5)
+	
+	for(int i=0; i<args.length; i++)
+	{
+		System.out.println(args[i]);
+	}
+		if (args.length<=4)
 		{
-			System.out.println("invalid usage. try: java Client <host_name> <port_number> <oper> <opnd>* ");
+			System.out.println("invalid usage. try: java dataSystem.Client <host_name> <port_number> <oper> <opnd>* ");
 			return;
 		}
 		
 			Client client = new Client();
 			
-			client.setHost_name(args[2]);
-			client.setPort_number(Integer.parseInt(args[3].toString()));
+			client.setHost_name(args[0]);
+			client.setPort_number(Integer.parseInt(args[1].toString()));
 			
-		 String[] temp = new String[args.length-4];
+		 String[] temp = new String[args.length-3];
 		 
 		for(int i=0; i<temp.length; i++)
 		{
-			temp[i]=args[4+i].toString();
+			temp[i]=args[3+i].toString();
 		}
 		
 		System.out.print("Client Debug\n");
@@ -66,19 +71,24 @@ public static void main(String[] args) throws IOException
 		System.out.print("Port Number:");
 		System.out.println(client.getPort_number());
 		
-		System.out.println("Operation:");
+		System.out.print("Operation:");
+		System.out.println(args[2]);
 		
 		System.out.print("Operation Args:");
+		for(int i=0; i<temp.length; i++)
+		{
+			System.out.print(temp[i]);
+		}
 		System.out.print("\n");
 		
 		
 		DatagramSocket socket = new DatagramSocket();
 		
 		String msg;
-		msg = new String(args[4]);
-		for(int i=5;i<args.length;i++)
+		msg = new String(args[2]);
+		for(int i=0;i<args.length-3;i++)
 		{
-			msg += " " + args[i];
+			msg += " " + args[3+i];
 		}
 		System.out.println(msg);
 		byte[] sentBuffer = new byte[msg.getBytes().length];
