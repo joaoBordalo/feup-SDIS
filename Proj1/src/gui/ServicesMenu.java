@@ -11,6 +11,7 @@ import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.TextArea;
 
 public class ServicesMenu extends JFrame {
 
@@ -36,40 +37,59 @@ public class ServicesMenu extends JFrame {
 	 * Create the frame.
 	 */
 	public ServicesMenu() {
+		
 		setTitle("BackUP Service");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 478, 351);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(71, 43, 89, 23);
-		contentPane.add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("New button");
-		btnNewButton_1.setBounds(266, 43, 89, 23);
-		contentPane.add(btnNewButton_1);
-		
-		JButton btnNewButton_2 = new JButton("New button");
-		btnNewButton_2.setBounds(71, 77, 89, 23);
-		contentPane.add(btnNewButton_2);
-		
-		JButton btnNewButton_3 = new JButton("New button");
-		btnNewButton_3.addActionListener(new ActionListener() {
+		//===================================================================================
+		//BUTTONS
+		JButton backupButton = new JButton("BackUp File");
+		backupButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnNewButton_3.setBounds(266, 77, 89, 23);
-		contentPane.add(btnNewButton_3);
+		backupButton.setBounds(56, 41, 163, 23);
+		contentPane.add(backupButton);
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setBounds(37, 136, 356, 114);
-		contentPane.add(textPane);
+		JButton restoreButton = new JButton("Restore Backuped File");
+		restoreButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		restoreButton.setBounds(250, 41, 162, 23);
+		contentPane.add(restoreButton);
 		
-		JLabel lblMessageLog = new JLabel("Message Log");
-		lblMessageLog.setBounds(37, 111, 118, 14);
-		contentPane.add(lblMessageLog);
+		JButton deleteButton = new JButton("Delete Backuped File");
+		deleteButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		deleteButton.setBounds(56, 75, 163, 23);
+		contentPane.add(deleteButton);
+		
+		JButton freeButton = new JButton("Free Backup space");
+		freeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		freeButton.setBounds(250, 75, 162, 23);
+		contentPane.add(freeButton);
+		
+		
+		//===================================================================================
+		//LABEL
+		JLabel messageLogLabel = new JLabel("Message Log");
+		messageLogLabel.setBounds(41, 111, 119, 14);
+		contentPane.add(messageLogLabel);
+		
+		TextArea textArea = new TextArea();
+		textArea.setBounds(32, 131, 380, 160);
+		contentPane.add(textArea);
 	}
 }

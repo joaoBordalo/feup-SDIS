@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -9,6 +8,15 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JSpinner;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.net.URL;
+import java.util.Vector;
 
 public class ConfigurationMenu extends JFrame {
 
@@ -34,61 +42,152 @@ public class ConfigurationMenu extends JFrame {
 	 * Create the frame.
 	 */
 	public ConfigurationMenu() {
+		
+		setTitle("BackUP Service");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 300);
-		setTitle("BackUP Service");
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JSpinner MCspinner = new JSpinner();
-		MCspinner.setBounds(307, 54, 100, 20);
-		contentPane.add(MCspinner);
-		
-		JSpinner MDBspinner = new JSpinner();
-		MDBspinner.setBounds(307, 85, 100, 20);
-		contentPane.add(MDBspinner);
-		
-		JSpinner MDRspinner = new JSpinner();
-		MDRspinner.setBounds(307, 117, 100, 20);
-		contentPane.add(MDRspinner);
-		
-		
-		JLabel MDBLabel = new JLabel("MultiCast Data BackUp Channel Port");
-		MDBLabel.setBounds(44, 85, 253, 20);
-		contentPane.add(MDBLabel);
-		
-		JLabel MDRLabel = new JLabel("MultiCast Data Recover Channel Port");
-		MDRLabel.setBounds(44, 117, 253, 20);
-		contentPane.add(MDRLabel);
-		
+
+
+		//===================================================================================
+		//SPINNERS
+		JSpinner mCspinner = new JSpinner();
+		mCspinner.setBounds(307, 54, 100, 20);
+		contentPane.add(mCspinner);
+
+		JSpinner mDBspinner = new JSpinner();
+		mDBspinner.setBounds(307, 85, 100, 20);
+		contentPane.add(mDBspinner);
+
+		JSpinner mDRspinner = new JSpinner();
+		mDRspinner.setBounds(307, 117, 100, 20);
+		contentPane.add(mDRspinner);
+
+		JSpinner bSpacespinner = new JSpinner();
+		bSpacespinner.setBounds(307, 169, 100, 20);
+		contentPane.add(bSpacespinner);
+
+
+		//===================================================================================
+		//LABELS
+		JLabel mDBLabel = new JLabel("MultiCast Data BackUp Channel Port");
+		mDBLabel.setBounds(44, 85, 253, 20);
+		contentPane.add(mDBLabel);
+
+		JLabel mDRLabel = new JLabel("MultiCast Data Recover Channel Port");
+		mDRLabel.setBounds(44, 117, 253, 20);
+		contentPane.add(mDRLabel);
+
+		JLabel bSpaceLabel = new JLabel("Maximum Backup Space (GB)");
+		bSpaceLabel.setBounds(44, 169, 192, 20);
+		contentPane.add(bSpaceLabel);
+
+		JLabel mCLabel = new JLabel("MultiCast Control Channel Port");
+		mCLabel.setBounds(44, 54, 253, 20);
+		contentPane.add(mCLabel);
+
+		JLabel lblServiceConfiguration = new JLabel("Service Configuration");
+		lblServiceConfiguration.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblServiceConfiguration.setBounds(21, 11, 159, 32);
+		contentPane.add(lblServiceConfiguration);
+
+		//===================================================================================
+		//BUTTONS
 		JButton btnApplyConfiguration = new JButton("Apply Configuration");
+		btnApplyConfiguration.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							setVisible(false);
+							ServicesMenu frame = new ServicesMenu();
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
 		btnApplyConfiguration.setBounds(321, 227, 153, 23);
 		contentPane.add(btnApplyConfiguration);
-		
+
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		btnCancel.setBounds(10, 227, 89, 23);
 		contentPane.add(btnCancel);
-		
-		JButton btnLoadConfiguratons = new JButton("Load Configurations");
-		btnLoadConfiguratons.setBounds(132, 227, 165, 23);
+
+		JButton btnLoadConfiguratons = new JButton("Load Configurations File");
+		btnLoadConfiguratons.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String filename="configs.txt";
+				Vector <Integer> configsFile = new Vector <Integer>();
+				String line=null;
+				
+				
+				try
+				{
+					
+				URL path = ClassLoader.getSystemResource(filename);
+				if(path==null) {
+					System.err.format("Can´t find or file '%s' doesen't exist\n",filename);
+					return;
+				}
+				
+					File f = new File(path.toURI());
+					System.out.println(f.getAbsolutePath());
+					BufferedReader reader = new BufferedReader(new FileReader(f));
+					
+					while ((line = reader.readLine()) != null)
+					{
+						System.out.println(line);
+
+						Integer value = Integer.parseInt(line);
+						configsFile.add(value);
+					}
+					reader.close();
+
+				}
+				catch (NumberFormatException e1)
+				{
+					System.err.format("'%s' isn't in the right format.\n", line);
+					return;
+				}
+				catch(SecurityException e1){
+					System.err.format("No permitions to access '%s'.\n", filename);
+					return;
+				}
+				catch (Exception e1)
+				{
+					System.err.format("Exception occurred trying to read '%s'.\n", filename);
+					e1.printStackTrace();
+					return;
+
+				}
+
+				if (configsFile.size()!= 4)
+				{
+					System.err.format("File '%s' doesn't have the service configurations right.", filename);
+					return;
+				}
+
+				mCspinner.setValue(configsFile.get(0));
+				mDBspinner.setValue(configsFile.get(1));
+				mDRspinner.setValue(configsFile.get(2));
+				bSpacespinner.setValue(configsFile.get(3));
+			}
+
+		});
+		btnLoadConfiguratons.setBounds(116, 227, 181, 23);
 		contentPane.add(btnLoadConfiguratons);
-		
-		JSpinner MSpacespinner = new JSpinner();
-		MSpacespinner.setBounds(307, 159, 100, 20);
-		contentPane.add(MSpacespinner);
-		
-		JLabel BSpaceLabel = new JLabel("Backup Space available");
-		BSpaceLabel.setBounds(44, 159, 192, 17);
-		contentPane.add(BSpaceLabel);
-		
-		JLabel MCLabel = new JLabel("MultiCast Control Channel Port");
-		MCLabel.setBounds(44, 54, 253, 20);
-		contentPane.add(MCLabel);
-		
-		JLabel lblServiceConfiguration = new JLabel("Service Configuration");
-		lblServiceConfiguration.setBounds(21, 11, 146, 19);
-		contentPane.add(lblServiceConfiguration);
+
+
 	}
 }

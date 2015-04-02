@@ -5,8 +5,9 @@ import java.io.IOException;
 
 
 
+
+import threads.*;
 import comSystem.*;
-import Threads.*;
 
 public class Peer {
 	

@@ -1,8 +1,8 @@
 package commands;
 
-public class PutChunk {
+public class Delete {
 	
-	private String message;
+private String message;
 	
 	public String getMessageS() {
 		return message;
@@ -16,10 +16,11 @@ public class PutChunk {
 		this.message = message;
 	}
 
-	public PutChunk(String ver, int fId, int chunkN, int repDegree, String body )
+	public Delete(String ver, int fId, int chunkN, String body )
 	{
-		message = new Header("PUTCHUNK", ver, fId, chunkN, repDegree).getHeaderMsgS() + "\n\r" + body;
+		message = new Header("DELETE", ver, fId).getHeaderMsgS() + "\n\r";
 		
 	}
+
 
 }
