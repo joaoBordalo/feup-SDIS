@@ -18,9 +18,48 @@ import java.io.FileReader;
 import java.net.URL;
 import java.util.Vector;
 
+import javax.swing.SpinnerNumberModel;
+
+@SuppressWarnings("serial")
 public class ConfigurationMenu extends JFrame {
 
 	private JPanel contentPane;
+	private int mcPort;
+	private int mdbPort;
+	private int mdrPort;
+	private float maximumSpace;
+
+	public int getMcPort() {
+		return mcPort;
+	}
+
+	public void setMcPort(int mcPort) {
+		this.mcPort = mcPort;
+	}
+
+	public int getMdbPort() {
+		return mdbPort;
+	}
+
+	public void setMdbPort(int mdbPort) {
+		this.mdbPort = mdbPort;
+	}
+
+	public int getMdrPort() {
+		return mdrPort;
+	}
+
+	public void setMdrPort(int mdrPort) {
+		this.mdrPort = mdrPort;
+	}
+
+	public float getMaximumSpace() {
+		return maximumSpace;
+	}
+
+	public void setMaximumSpace(float maximumSpace) {
+		this.maximumSpace = maximumSpace;
+	}
 
 	/**
 	 * Launch the application.
@@ -67,6 +106,7 @@ public class ConfigurationMenu extends JFrame {
 		contentPane.add(mDRspinner);
 
 		JSpinner bSpacespinner = new JSpinner();
+		bSpacespinner.setModel(new SpinnerNumberModel(new Float(64), new Float(64), null, new Float(1)));
 		bSpacespinner.setBounds(307, 169, 100, 20);
 		contentPane.add(bSpacespinner);
 
@@ -103,7 +143,12 @@ public class ConfigurationMenu extends JFrame {
 					public void run() {
 						try {
 							setVisible(false);
-							ServicesMenu frame = new ServicesMenu();
+							
+							mcPort=(int) mCspinner.getValue();
+							mdbPort=(int) mDBspinner.getValue();
+							mdrPort=(int) mDRspinner.getValue();
+							maximumSpace = (float) bSpacespinner.getValue();
+							ServicesMenu frame = new ServicesMenu(ConfigurationMenu.this);
 							frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
