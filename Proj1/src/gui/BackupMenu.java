@@ -25,18 +25,16 @@ public class BackupMenu extends JFrame {
 	private int replicationDegree;
 	
 	public BackupMenu(ServicesMenu previousMenu) {
+		setTitle("Backup File");
 		
 		this.setPreviousMenu(previousMenu);
 		setBounds(100, 100, 450, 300);
-		// set up a file picker component
+		
+		//FilePicker settings
 		JFilePicker filePicker = new JFilePicker("Pick a file", "Browse...");
 		filePicker.setMode(JFilePicker.MODE_OPEN);
-
-		// access JFileChooser class directly
 		JFileChooser fileChooser = filePicker.getFileChooser();
 		fileChooser.setCurrentDirectory(new File("D:/"));
-
-		// add the component to the frame
 		filePicker.setLayout(new FlowLayout(FlowLayout.CENTER));
 		getContentPane().add(filePicker,BorderLayout.NORTH);
 		
@@ -44,6 +42,7 @@ public class BackupMenu extends JFrame {
 		spinnerPane.setLayout(new FlowLayout(FlowLayout.CENTER));
 		getContentPane().add(spinnerPane, BorderLayout.CENTER);
 
+		
 		JLabel replicationDegreeLabel = new JLabel("Number of Replication Degree");
 		replicationDegreeLabel.setBounds(26, 93, 200, 20);
 		spinnerPane.add(replicationDegreeLabel);
@@ -58,8 +57,11 @@ public class BackupMenu extends JFrame {
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-		JButton okButton = new JButton("OK");
-		okButton.addActionListener(new ActionListener() {
+		
+		//===================================================================================
+		//BUTTONS
+		JButton btnBackup = new JButton("Backup");
+		btnBackup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				previousMenu.setEnabled(true);
@@ -67,12 +69,12 @@ public class BackupMenu extends JFrame {
 				setReplicationDegree((int) ReplicationDegreespinner.getValue());
 				setPathfile(filePicker.getSelectedFilePath());
 				setFileName(filePicker.getFileName());
-
+				previousMenu.addBackupedFile(fileName);
 			}
 		});
-		okButton.setActionCommand("OK");
-		buttonPane.add(okButton);
-		getRootPane().setDefaultButton(okButton);
+		btnBackup.setActionCommand("OK");
+		buttonPane.add(btnBackup);
+		getRootPane().setDefaultButton(btnBackup);
 
 
 		JButton cancelButton = new JButton("Cancel");
@@ -90,6 +92,10 @@ public class BackupMenu extends JFrame {
 		setSize(450, 150);
 	}
 
+	
+	//===================================================================================
+	//===================================================================================
+	//Other Methods 
 	public int getReplicationDegree() {
 		return replicationDegree;
 	}

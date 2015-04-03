@@ -17,7 +17,7 @@ public class ServicesMenu extends JFrame {
 	
 	private JPanel contentPane;
 	private ConfigurationMenu configsMenu;
-	private Vector <String> backupedFileNames;
+	private Vector <String> backupedFileNames=new Vector <String>();
 
 	/**
 	 * Create the frame.
@@ -25,9 +25,8 @@ public class ServicesMenu extends JFrame {
 	public ServicesMenu(ConfigurationMenu configsMenu) {
 		
 		this.setConfigsMenu(configsMenu);
-		backupedFileNames=new Vector <String>();
 		
-		setTitle("BackUP Service");
+		setTitle("BackUP Services");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 478, 351);
 		contentPane = new JPanel();
@@ -44,8 +43,6 @@ public class ServicesMenu extends JFrame {
 				BackupMenu backupMenu = new BackupMenu(ServicesMenu.this);
 				setEnabled(false);
 				backupMenu.setVisible(true);
-				backupedFileNames.add(backupMenu.getFileName());
-				
 			}
 		});
 		backupButton.setBounds(56, 41, 163, 23);
@@ -54,9 +51,9 @@ public class ServicesMenu extends JFrame {
 		JButton restoreButton = new JButton("Restore Backuped File");
 		restoreButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//RestoreMenu restoreMenu = new RestoreMenu(ServicesMenu.this);
+				RestoreMenu restoreMenu = new RestoreMenu(ServicesMenu.this);
 				setEnabled(false);
-				//restoreMenu.setVisible(true);
+				restoreMenu.setVisible(true);
 			}
 		});
 		restoreButton.setBounds(250, 41, 162, 23);
@@ -65,9 +62,9 @@ public class ServicesMenu extends JFrame {
 		JButton deleteButton = new JButton("Delete Backuped File");
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//DeleteMenu deleteMenu = new DeleteMenu(ServicesMenu.this);
+				DeleteMenu deleteMenu = new DeleteMenu(ServicesMenu.this);
 				setEnabled(false);
-				//deleteMenu.setVisible(true);
+				deleteMenu.setVisible(true);
 			}
 		});
 		deleteButton.setBounds(56, 75, 163, 23);
@@ -76,9 +73,9 @@ public class ServicesMenu extends JFrame {
 		JButton freeButton = new JButton("Free Backup space");
 		freeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//FreeSpaceMenu freeSpaceMenu = new FreeSpaceMenu(ServicesMenu.this);
+				FreeSpaceMenu freeSpaceMenu = new FreeSpaceMenu(ServicesMenu.this);
 				setEnabled(false);
-				//freeSpaceMenu.setVisible(true);
+				freeSpaceMenu.setVisible(true);
 			}
 		});
 		freeButton.setBounds(250, 75, 162, 23);
@@ -107,7 +104,13 @@ public class ServicesMenu extends JFrame {
 	}
 
 	public Vector <String> getBackupedFileNames() {
+		
 		return backupedFileNames;
+	}
+	
+	public void addBackupedFile(String fileName)
+	{
+		backupedFileNames.add(fileName);
 	}
 
 	public void setBackupedFileNames(Vector <String> backupedFileNames) {
