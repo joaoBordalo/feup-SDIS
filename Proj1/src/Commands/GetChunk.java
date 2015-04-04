@@ -16,7 +16,7 @@ public class GetChunk {
 		this.message = message;
 	}
 
-	public GetChunk(String ver, int fId, int chunkN)
+	public GetChunk(String ver, String fId, int chunkN)
 	{
 		message = new Header("GETCHUNK", ver, fId, chunkN).getHeaderMsgS() + "\n\r";
 		

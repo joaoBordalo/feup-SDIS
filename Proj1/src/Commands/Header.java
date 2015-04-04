@@ -7,17 +7,17 @@ public class Header{
 	private String headerMsg;
 	
 	
-	public Header(String mType, String ver, int fId, int chunkN, int repDegree)
+	public Header(String mType, String ver, String fId, int chunkN, int repDegree)
 	{
 		headerMsg = mType + " "  + ver + " "  + fId + " " + chunkN + " " + repDegree + " "  + "\n\r";
 	}
 	
-	public Header(String mType, String ver, int fId, int chunkN)
+	public Header(String mType, String ver, String fId, int chunkN)
 	{
 		headerMsg = mType+ " "  + ver + " "  + fId + " " + chunkN + " " + "\n\r";
 	}
 	
-	public Header(String mType, String ver, int fId)
+	public Header(String mType, String ver, String fId)
 	{
 		headerMsg = mType + " "  + ver + " "  + fId + " " + "\n\r";
 	}

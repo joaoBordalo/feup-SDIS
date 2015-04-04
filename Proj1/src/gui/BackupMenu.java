@@ -1,10 +1,15 @@
 package gui;
 
+import info.BackupFile;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -13,6 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+
+import protocols.Backup;
 
 
 
@@ -28,7 +35,7 @@ public class BackupMenu extends JFrame {
 		setTitle("Backup File");
 		
 		this.setPreviousMenu(previousMenu);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 200);
 		
 		//FilePicker settings
 		JFilePicker filePicker = new JFilePicker("Pick a file", "Browse...");
@@ -69,7 +76,26 @@ public class BackupMenu extends JFrame {
 				setReplicationDegree((int) ReplicationDegreespinner.getValue());
 				setPathfile(filePicker.getSelectedFilePath());
 				setFileName(filePicker.getFileName());
-				previousMenu.addBackupedFile(fileName);
+				File f = new File(pathfile);
+				BackupFile file= new BackupFile(fileName, replicationDegree, f.length());
+				previousMenu.addBackupedfileList(file);
+				
+				//send chunks!!
+				Backup bc;
+				try {
+					bc = new Backup(previousMenu.getConfigsMenu().peer,fileName,replicationDegree,pathfile);
+					bc.run();
+				} 
+				catch (IOException | URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+				catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
 			}
 		});
 		btnBackup.setActionCommand("OK");
@@ -89,7 +115,7 @@ public class BackupMenu extends JFrame {
 		buttonPane.add(cancelButton);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(450, 150);
+		setSize(450, 200);
 	}
 
 	
@@ -127,6 +153,8 @@ public class BackupMenu extends JFrame {
 	public void setPreviousMenu(ServicesMenu previousMenu) {
 		this.previousMenu = previousMenu;
 	}
+	
+
 
 
 }

@@ -85,7 +85,11 @@ public class RestoreMenu extends JFrame {
 	}
 	public String[] getRestoredFiles() {
 
-		Vector <String> aux = previousMenu.getBackupedFileNames();
+		Vector <String> aux =new Vector<String>();
+		for(int i =0;i < previousMenu.getBackupedfilesList().size();i++)
+		{
+			aux.add(previousMenu.getBackupedfilesList().get(i).getFileName());
+		}
 		int nFilesRestored = aux.size();
 		restoredFiles = new String[nFilesRestored];
 		for (int i = 0; i < nFilesRestored;i++ ) {

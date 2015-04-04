@@ -43,7 +43,7 @@ public class MSock {
 		System.out.println("enviei:" +msg);
 	}
 	
-	public String receive() throws IOException
+	public PacketInfo receive() throws IOException
 	{
 		
         byte[] buf = new byte[1024];
@@ -51,10 +51,11 @@ public class MSock {
 		DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
         receiveSocket.receive(msgPacket);
 
-        String msg = new String(buf, 0, buf.length);
+        String msg = new String(msgPacket.getData());
+        
         
         System.out.println("recebi: " + msg);
-        return msg;
+        return new PacketInfo(msg, msgPacket.getAddress(), msgPacket.getPort());
 	}
 	
 	

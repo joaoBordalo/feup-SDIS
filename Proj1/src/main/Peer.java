@@ -1,7 +1,14 @@
 package main;
 
 
+import gui.ConfigurationMenu;
+import gui.ServicesMenu;
+
+import java.awt.EventQueue;
 import java.io.IOException;
+
+
+
 
 
 
@@ -85,22 +92,59 @@ public class Peer {
 		 
 	}
 	
-
+/*
 
 	public static void main(String[] args) throws NumberFormatException, IOException
 	{
-		if(args.length<6)
+		
+		if(args.length==0)
+		{
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						ConfigurationMenu frame = new ConfigurationMenu();
+						frame.setVisible(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		}
+		else if(args.length<7)
 		{
 			System.out.println("wrong number of arguments");
-			System.out.println("usage-> java peer <MCadd> <MCport> <MDBadd> <MDBport> <MDRadd> <MDBport>");
+			System.out.println("usage-> java peer <MCadd> <MCport> <MDBadd> <MDBport> <MDRadd> <MDBport> <DiskSize>");
 		}
 		else
 		{
 			 Peer peer=new Peer();
 			 
 			 peer.init(args);
+			 
+			 ConfigurationMenu cf = new ConfigurationMenu();
+			 cf.setMcIP(args[0]);
+			 cf.setMcPort(Integer.parseInt(args[1]));
+			 cf.setMdbIP(args[2]);
+			 cf.setMdbPort(Integer.parseInt(args[3]));
+			 cf.setMdrIP(args[4]);
+			 cf.setMdrPort(Integer.parseInt(args[5]));
+			 cf.setMcIP(args[6]);
+			 
+			 EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							ServicesMenu frame = new ServicesMenu(cf);
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			 
 		}
+		
+		
 			
-	}
+	}*/
 
 }

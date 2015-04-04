@@ -84,7 +84,11 @@ public class DeleteMenu extends JFrame {
 	}
 	public String[] getDeletedFiles() {
 
-		Vector <String> aux = previousMenu.getBackupedFileNames();
+		Vector <String> aux =new Vector<String>();
+		for(int i =0;i < previousMenu.getBackupedfilesList().size();i++)
+		{
+			aux.add(previousMenu.getBackupedfilesList().get(i).getFileName());
+		}
 		int nFilesRestored = aux.size();
 		deletedFiles = new String[nFilesRestored];
 		for (int i = 0; i < nFilesRestored;i++ ) {

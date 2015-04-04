@@ -16,7 +16,7 @@ private String message;
 		this.message = message;
 	}
 
-	public Removed(String ver, int fId, int chunkN)
+	public Removed(String ver, String fId, int chunkN)
 	{
 		message = new Header("REMOVED", ver, fId, chunkN).getHeaderMsgS() + "\n\r";
 		
