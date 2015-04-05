@@ -6,18 +6,21 @@ public class BackupFile {
 	private int replicationDegree;
 	private float fileSize;
 	private boolean backuped;
+	private int numberChunks;
 	
-	public BackupFile(String fileName, int replicationDegree, float fileSize)
+	public BackupFile(String fileName, int replicationDegree, int numberChunks,float fileSize)
 	{
 		this.fileName=fileName;
 		this.replicationDegree=replicationDegree;
+		this.numberChunks=numberChunks;
 		this.fileSize=fileSize;
 		this.backuped = false;
 	}
-	public BackupFile(String fileName, int replicationDegree, float fileSize,boolean backuped)
+	public BackupFile(String fileName, int replicationDegree, int numberChunks, float fileSize,boolean backuped)
 	{
 		this.fileName=fileName;
 		this.replicationDegree=replicationDegree;
+		this.numberChunks=numberChunks;
 		this.fileSize=fileSize;
 		this.backuped = backuped;
 	}
@@ -25,7 +28,7 @@ public class BackupFile {
 	@Override
 	public String toString()
 	{
-		return fileName + " " + replicationDegree + " " + fileSize + " " + backuped;
+		return fileName + " " + replicationDegree + " " + numberChunks + " " + fileSize + " " + backuped + "\n";
 		
 	}
 	
@@ -56,6 +59,12 @@ public class BackupFile {
 	}
 	public void setBackuped(boolean backuped) {
 		this.backuped = backuped;
+	}
+	public int getNumberChunks() {
+		return numberChunks;
+	}
+	public void setNumberChunks(int numberChunks) {
+		this.numberChunks = numberChunks;
 	}
 
 }

@@ -6,9 +6,12 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.security.NoSuchAlgorithmException;
 
 import javax.swing.JButton;
@@ -77,14 +80,34 @@ public class BackupMenu extends JFrame {
 				setPathfile(filePicker.getSelectedFilePath());
 				setFileName(filePicker.getFileName());
 				File f = new File(pathfile);
-				BackupFile file= new BackupFile(fileName, replicationDegree, f.length());
+				int nchunks=(int) Math.ceil(f.length()/64000);
+				BackupFile file= new BackupFile(fileName, replicationDegree,nchunks, f.length());
 				previousMenu.addBackupedfileList(file);
 				
+				try {
+					BufferedWriter writer =Files.newBufferedWriter(previousMenu.getBackupedFile().toPath(), StandardOpenOption.APPEND);
+					writer.write(file.toString());
+					writer.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				//send chunks!!
 				Backup bc;
 				try {
 					bc = new Backup(previousMenu.getConfigsMenu().peer,fileName,replicationDegree,pathfile);
 					bc.run();
+					
+					file.isBackuped();
+					
+					//getting the last backuped file and saying that it was backuped sucessfully
+					previousMenu.getBackupedfilesList().get(previousMenu.getBackupedfilesList().size()-1).isBackuped();
+					BufferedWriter writer =Files.newBufferedWriter(previousMenu.getBackupedFile().toPath(), StandardOpenOption.WRITE);
+					for(int i = 0; i < previousMenu.getBackupedfilesList().size(); i++)
+					{
+						writer.write(previousMenu.getBackupedfilesList().get(i).toString());
+					}
+					writer.close();
 				} 
 				catch (IOException | URISyntaxException e) {
 					// TODO Auto-generated catch block

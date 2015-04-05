@@ -35,7 +35,7 @@ public class ConfigurationMenu extends JFrame {
 	private String mcIP;
 	private String mdbIP;
 	private String mdrIP;
-	private float maximumSpace;
+	private int maximumSpace;
 	public Peer peer;
 
 
@@ -152,7 +152,7 @@ public class ConfigurationMenu extends JFrame {
 							mcPort=(int) mCspinner.getValue();
 							mdbPort=(int) mDBspinner.getValue();
 							mdrPort=(int) mDRspinner.getValue();
-							maximumSpace = (float) bSpacespinner.getValue();
+							maximumSpace = (int) bSpacespinner.getValue();
 							mcIP=textFieldMC.getText();
 							mdbIP=textFieldMC.getText();
 							mdrIP=textFieldMC.getText();
@@ -209,6 +209,7 @@ public class ConfigurationMenu extends JFrame {
 					{
 
 						configsFile.add(line);
+
 					}
 					reader.close();
 
@@ -236,12 +237,12 @@ public class ConfigurationMenu extends JFrame {
 					return;
 				}
 				textFieldMC.setText(configsFile.get(0));
-				mCspinner.setValue(configsFile.get(1));
+				mCspinner.setValue(Integer.parseInt(configsFile.get(1)));
 				textFieldMDB.setText(configsFile.get(2));
-				mDBspinner.setValue(configsFile.get(3));
+				mDBspinner.setValue(Integer.parseInt(configsFile.get(3)));
 				textFieldMDR.setText(configsFile.get(4));
-				mDRspinner.setValue(configsFile.get(5));
-				bSpacespinner.setValue(configsFile.get(6));
+				mDRspinner.setValue(Integer.parseInt(configsFile.get(5)));
+				bSpacespinner.setValue(Integer.parseInt(configsFile.get(6)));
 			}
 
 		});
@@ -277,11 +278,11 @@ public class ConfigurationMenu extends JFrame {
 		this.mdrPort = mdrPort;
 	}
 
-	public float getMaximumSpace() {
+	public int getMaximumSpace() {
 		return maximumSpace;
 	}
 
-	public void setMaximumSpace(float maximumSpace) {
+	public void setMaximumSpace(int maximumSpace) {
 		this.maximumSpace = maximumSpace;
 	}
 

@@ -1,14 +1,11 @@
 package threads;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -40,14 +37,12 @@ public class ChannelThread extends Thread{
 			while(true)
 			{
 				try {
-					String commandToParse= peer.getMC().receive().getMessage();//nao sei se isto vai devolver em bytes e nao faz conversao implicita
+					String commandToParse= peer.getMC().receive().getMessage();
 					parseMessage(commandToParse);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
-
 			}
 		}
 
@@ -62,8 +57,6 @@ public class ChannelThread extends Thread{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
-
 			}
 		}
 
@@ -97,13 +90,40 @@ public class ChannelThread extends Thread{
 		}
 	}
 
-	public void parseMessage(String msg)
+	public void parseMessage(String msg) throws UnsupportedEncodingException
 	{
-		String[] tokens = msg.split(" ");
-
+		//System.out.println("msg to parse: "+ msg);
+		
+		 int headerEnd = msg.indexOf("\r\n");
+		 int bodyStart = msg.lastIndexOf("\r\n");
+		 
+		 String subs = msg.substring(0,headerEnd).trim();
+		 String subsbody = msg.substring(headerEnd).trim();
+		 
+		// System.out.println("header end: "+ headerEnd);
+		 //System.out.println("body start: "+ bodyStart);
+		 
+		 //System.out.println("subs: "+ subs);
+		 //System.out.println("subsbody: "+ subsbody);
+		 
+		 String[] tokens = subs.split(" ");
+		 
+		 
+		
+		/*for(int i=0; i<tokens.length;i++)
+		{
+			if(i==tokens.length-1)
+			{
+				System.out.println("last token " + i+ ": "+ tokens[i]);
+			}else
+			{
+		System.out.println("splited tokens " + i+ ": "+ tokens[i]);
+			}
+		}*/
+		
 		switch (tokens[0]) {
 		case "PUTCHUNK":
-			SaveChunk(tokens);
+			SaveChunk(tokens, subsbody);
 
 			break;
 		case "STORED":
@@ -128,17 +148,18 @@ public class ChannelThread extends Thread{
 		}
 	}
 
-	public void SaveChunk(String [] chunkData)
+	public void SaveChunk(String [] chunkData, String Body)
 	{
 		File newFile = new File(chunkData[2]+"."+ chunkData[3]); //file id no [2] e chunkno no [3]
-		FileOutputStream out;
+		RandomAccessFile out;
 		
 		
 		File chunkFile = new File("chunkfile.txt");
-
+		
 		try {
-			out = new FileOutputStream(newFile);
-			out.write(chunkData[chunkData.length].getBytes());
+			out = new RandomAccessFile(newFile,"rw");
+			out.writeBytes(Utilities.byteArrayToString(Body.getBytes()));
+			out.close();
 			if(!chunkFile.exists())
 			{
 				chunkFile.createNewFile();
@@ -148,6 +169,7 @@ public class ChannelThread extends Thread{
 			Path chunkfilepath = Paths.get("chunkfile.txt");
 			try (BufferedWriter writer = Files.newBufferedWriter(chunkfilepath, StandardOpenOption.APPEND)) {
 	            writer.write(chunkData[2]+"."+ chunkData[3] + " " + chunkData[4] + " 0 \n");
+	            writer.close();
 	        } catch (IOException e) {
 	            System.err.println(e);
 	        }
@@ -177,8 +199,6 @@ public class ChannelThread extends Thread{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
 
 	}
 

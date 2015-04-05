@@ -25,12 +25,15 @@ public class ServicesMenu extends JFrame {
 	private ConfigurationMenu configsMenu;
 	private Vector <BackupFile> backupedfilesList = new Vector <BackupFile>();
 	private File backupedFile;
+	private int availableSpace;
 
 	/**
 	 * Create the frame.
 	 */
 	public ServicesMenu(ConfigurationMenu configsMenu) {
-
+		
+		//availableSpace =this.configsMenu.getMaximumSpace();
+		
 		this.setConfigsMenu(configsMenu);
 		
 		try {
@@ -131,15 +134,36 @@ public class ServicesMenu extends JFrame {
 	{
 		BufferedReader reader = new BufferedReader(new FileReader(backupedFile));
 		String content=null;
-		String[] parsedContent= new String[4];
+		String[] parsedContent= new String[5];
 		while ((content = reader.readLine()) != null)
 		{
 			parsedContent=content.split(" ");
-			BackupFile backupFile= new BackupFile(parsedContent[0],Integer.parseInt(parsedContent[1]),Float.parseFloat(parsedContent[2]),Boolean.parseBoolean(parsedContent[3]));
+			BackupFile backupFile= new BackupFile(parsedContent[0],Integer.parseInt(parsedContent[1]),Integer.parseInt(parsedContent[2]),Float.parseFloat(parsedContent[3]),Boolean.parseBoolean(parsedContent[4]));
 			backupedfilesList.add(backupFile);
 		}
 		reader.close();
 	}
+	
+	public boolean spaceAvailable()
+	{
+		int usedSpace=0;
+		
+		for (int i = 0; i < backupedfilesList.size();i++)
+		{
+			usedSpace +=backupedfilesList.get(i).getFileSize();
+		}
+		
+		return configsMenu.getMaximumSpace()>usedSpace;
+		
+	}
+	public File getBackupedFile() {
+		return backupedFile;
+	}
+
+	public void setBackupedFile(File backupedFile) {
+		this.backupedFile = backupedFile;
+	}
+
 	public ConfigurationMenu getConfigsMenu() {
 		return configsMenu;
 	}

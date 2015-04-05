@@ -17,7 +17,7 @@ public class FreeSpaceMenu extends JFrame {
 
 	private JPanel contentPane;
 	private ServicesMenu previousMenu;
-	private float spaceToFree;
+	private int spaceToFree;
 
 	/**
 	 * Create the frame.
@@ -34,7 +34,7 @@ public class FreeSpaceMenu extends JFrame {
 		contentPane.setLayout(null);
 		
 		
-		float maxSpace=this.previousMenu.getConfigsMenu().getMaximumSpace();
+		int maxSpace=this.previousMenu.getConfigsMenu().getMaximumSpace();
 		JSpinner spinnerFreeSpace = new JSpinner();
 		spinnerFreeSpace.setModel(new SpinnerNumberModel(new Float(0), new Float(0), new Float(maxSpace), new Float(1)));
 		spinnerFreeSpace.setBounds(295, 37, 89, 20);
@@ -64,7 +64,7 @@ public class FreeSpaceMenu extends JFrame {
 				setVisible(false);
 				previousMenu.setEnabled(true);
 				previousMenu.setVisible(true);
-				spaceToFree=(float) spinnerFreeSpace.getValue();
+				spaceToFree=(int) spinnerFreeSpace.getValue();
 				FreeSpaceMenu.this.previousMenu.getConfigsMenu().setMaximumSpace(maxSpace-spaceToFree);
 			}
 		});
@@ -77,7 +77,7 @@ public class FreeSpaceMenu extends JFrame {
 		return spaceToFree;
 	}
 
-	public void setSpaceToFree(float spaceToFree) {
+	public void setSpaceToFree(int spaceToFree) {
 		this.spaceToFree = spaceToFree;
 	}
 
