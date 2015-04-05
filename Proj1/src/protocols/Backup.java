@@ -1,7 +1,6 @@
 package protocols;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
@@ -12,7 +11,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
-import java.util.concurrent.TimeUnit;
 
 import main.Peer;
 import main.Utilities;
@@ -36,7 +34,9 @@ public class Backup {
 		this.pathFile=pathFile;
 		fileID= new String();
 
-		BufferedInputStream file = new BufferedInputStream(new FileInputStream(this.pathFile));
+		//BufferedInputStream file = new BufferedInputStream(new FileInputStream(this.pathFile));
+		File f= new File(this.pathFile);
+		RandomAccessFile file = new RandomAccessFile(f, "r");
 		System.out.println(pathFile);
 
 		int length=64*1000;
@@ -46,35 +46,46 @@ public class Backup {
 		chunks=new Vector<byte[]>();
 		int it =0;
 
-		while(file.read(chunk,0,length)!=-1)
+		
+		while(file.read(chunk)!=-1)
 		{
-			
+			file.seek(length*(it+1));
 			System.out.println(it);
+		//	System.out.println("chunks vector:" + chunks.size());
 			chunks.add(chunk);
-			System.out.println(chunks.get(it));
+			//System.out.println("chunks vector at " +it + chunks.get(it).toString());
+			
 			it++;
 		}
-		nchunks=it;
+		nchunks=it ;
 		file.close();
 	}
 
-	public void run() throws IOException, NoSuchAlgorithmException
+	public void run(Vector<byte[]> chunksToSend ) throws IOException, NoSuchAlgorithmException
 	{
 		for(int j = 0; j < nchunks; j++)
 		{
+			System.out.println("chunktosend size" + chunksToSend.get(j).length);
+			//System.out.println("-------------------------");
 			//prepare PUTCHUNK
-			PutChunk chunkToSend = new PutChunk("1.0", getFileID(), j, repliDegree, new String(chunks.get(j)));
+			PutChunk chunkToSend = new PutChunk("1.0", getFileID(), j, repliDegree, new String(chunksToSend.get(j)));
 			int timeToCheck=500;
 			
-			System.out.println("chunk to send size:" + chunkToSend.getMessageS().length());
+			//System.out.println("chunk data to send :" + chunkToSend.getMessageS());
 			//send message
-			for(int i=1; i<6; i++)
-			{
+			//for(int i=1; i<6; i++)
+			//{
 				int repCounter=0;
+				peer.getMDBthread().start();
 				peer.getMDB().send(chunkToSend.getMessageS());
-				for (long stop=System.nanoTime()+TimeUnit.MILLISECONDS.toNanos(timeToCheck); stop>System.nanoTime();) 
+				
+				
+				
+				//String[] receivedMsg = peer.getMC().receive().getMessage().trim().split(" ");
+				
+				/*for (long stop=System.nanoTime()+TimeUnit.MILLISECONDS.toNanos(timeToCheck); stop>System.nanoTime();) 
 				{	System.out.println("counting STOREDS");
-					String[] receivedMsg = peer.getMC().receive().getMessage().trim().split(" ");
+					
 					
 					if(receivedMsg[0]=="STORED")
 					{
@@ -91,9 +102,9 @@ public class Backup {
 				{
 					System.out.println("increasing time");
 					timeToCheck=2*timeToCheck;
-				}
+				}*/
 				
-			}
+			//}
 		}
 	}
 
@@ -155,10 +166,7 @@ public class Backup {
 	public void setFileID(String fileID) {
 		this.fileID = fileID;
 	}
-	/*
-	 * copyright from:
-	 *  http://stackoverflow.com/questions/1040868/java-syntax-and-meaning-behind-b1ef9157-binary-address
-	 */
+	
 	
 
 

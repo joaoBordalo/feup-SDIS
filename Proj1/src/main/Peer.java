@@ -80,11 +80,11 @@ public class Peer {
 		} 
 		
 		MCthread= new ChannelThread(this, "MC");
-		MCthread.start();
+		//MCthread.start();
 		MDBthread= new ChannelThread(this, "MDB");
-		MDBthread.start();
+		//MDBthread.start();
 		MDRthread= new ChannelThread(this, "MDR");
-		MDRthread.start();
+		//MDRthread.start();
 		 
 	}
 	

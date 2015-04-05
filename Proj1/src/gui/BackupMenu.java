@@ -36,8 +36,7 @@ public class BackupMenu extends JFrame {
 	
 	public BackupMenu(ServicesMenu previousMenu) {
 		setTitle("Backup File");
-		
-		this.setPreviousMenu(previousMenu);
+		this.previousMenu=previousMenu;
 		setBounds(100, 100, 450, 200);
 		
 		//FilePicker settings
@@ -74,18 +73,18 @@ public class BackupMenu extends JFrame {
 		btnBackup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
-				previousMenu.setEnabled(true);
-				previousMenu.setVisible(true);
+				BackupMenu.this.previousMenu.setEnabled(true);
+				BackupMenu.this.previousMenu.setVisible(true);
 				setReplicationDegree((int) ReplicationDegreespinner.getValue());
 				setPathfile(filePicker.getSelectedFilePath());
 				setFileName(filePicker.getFileName());
 				File f = new File(pathfile);
 				int nchunks=(int) Math.ceil(f.length()/64000);
 				BackupFile file= new BackupFile(fileName, replicationDegree,nchunks, f.length());
-				previousMenu.addBackupedfileList(file);
+				BackupMenu.this.previousMenu.addBackupedfileList(file);
 				
 				try {
-					BufferedWriter writer =Files.newBufferedWriter(previousMenu.getBackupedFile().toPath(), StandardOpenOption.APPEND);
+					BufferedWriter writer =Files.newBufferedWriter(BackupMenu.this.previousMenu.getBackupedFile().toPath(), StandardOpenOption.APPEND);
 					writer.write(file.toString());
 					writer.close();
 				} catch (IOException e1) {
@@ -95,17 +94,16 @@ public class BackupMenu extends JFrame {
 				//send chunks!!
 				Backup bc;
 				try {
-					bc = new Backup(previousMenu.getConfigsMenu().peer,fileName,replicationDegree,pathfile);
-					bc.run();
+					bc = new Backup(BackupMenu.this.previousMenu.getConfigsMenu().peer,fileName,replicationDegree,pathfile);
+					bc.run(bc.getChunks());
 					
-					file.isBackuped();
-					
+					file.setBackuped(true);
 					//getting the last backuped file and saying that it was backuped sucessfully
-					previousMenu.getBackupedfilesList().get(previousMenu.getBackupedfilesList().size()-1).isBackuped();
-					BufferedWriter writer =Files.newBufferedWriter(previousMenu.getBackupedFile().toPath(), StandardOpenOption.WRITE);
-					for(int i = 0; i < previousMenu.getBackupedfilesList().size(); i++)
+					BackupMenu.this.previousMenu.getBackupedfilesList().get(BackupMenu.this.previousMenu.getBackupedfilesList().size()-1).setBackuped(true);
+					BufferedWriter writer =Files.newBufferedWriter(BackupMenu.this.previousMenu.getBackupedFile().toPath(), StandardOpenOption.WRITE);
+					for(int i = 0; i < BackupMenu.this.previousMenu.getBackupedfilesList().size(); i++)
 					{
-						writer.write(previousMenu.getBackupedfilesList().get(i).toString());
+						writer.write(BackupMenu.this.previousMenu.getBackupedfilesList().get(i).toString()+"\n");
 					}
 					writer.close();
 				} 
@@ -130,8 +128,8 @@ public class BackupMenu extends JFrame {
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				previousMenu.setEnabled(true);
-				previousMenu.setVisible(true);
+				BackupMenu.this.previousMenu.setEnabled(true);
+				BackupMenu.this.previousMenu.setVisible(true);
 			}
 		});
 		cancelButton.setActionCommand("Cancel");

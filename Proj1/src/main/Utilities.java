@@ -2,6 +2,10 @@ package main;
 
 public class Utilities {
 	
+	/*
+	 * copyright from:
+	 *  http://stackoverflow.com/questions/1040868/java-syntax-and-meaning-behind-b1ef9157-binary-address
+	 */
 	public static String byteArrayToString(byte[] in) {
 	    char out[] = new char[in.length * 2];
 	    for (int i = 0; i < in.length; i++) {

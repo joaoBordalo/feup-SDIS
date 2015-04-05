@@ -28,7 +28,7 @@ public class BackupFile {
 	@Override
 	public String toString()
 	{
-		return fileName + " " + replicationDegree + " " + numberChunks + " " + fileSize + " " + backuped + "\n";
+		return fileName + " " + replicationDegree + " " + numberChunks + " " + fileSize + " " + backuped;
 		
 	}
 	

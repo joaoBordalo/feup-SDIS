@@ -95,15 +95,14 @@ public class ChannelThread extends Thread{
 		//System.out.println("msg to parse: "+ msg);
 		
 		 int headerEnd = msg.indexOf("\r\n");
-		 int bodyStart = msg.lastIndexOf("\r\n");
+		//int bodyStart = msg.lastIndexOf("\r\n");
 		 
 		 String subs = msg.substring(0,headerEnd).trim();
-		 String subsbody = msg.substring(headerEnd).trim();
+		 String subsbody = msg.substring(headerEnd+1).trim();
+		 //System.out.println("header end: "+ headerEnd);
+		 //System.out.println("body start: "+ (headerEnd+1));
 		 
-		// System.out.println("header end: "+ headerEnd);
-		 //System.out.println("body start: "+ bodyStart);
-		 
-		 //System.out.println("subs: "+ subs);
+		// System.out.println("subs: "+ subs);
 		 //System.out.println("subsbody: "+ subsbody);
 		 
 		 String[] tokens = subs.split(" ");
@@ -158,7 +157,8 @@ public class ChannelThread extends Thread{
 		
 		try {
 			out = new RandomAccessFile(newFile,"rw");
-			out.writeBytes(Utilities.byteArrayToString(Body.getBytes()));
+			//out.writeBytes(Utilities.byteArrayToString(Body.getBytes()));
+			out.writeBytes(Body);
 			out.close();
 			if(!chunkFile.exists())
 			{
@@ -179,14 +179,14 @@ public class ChannelThread extends Thread{
 			e.printStackTrace();
 		}
 
-		try {
+		/*try {
 			
 			sleep(new Random().nextInt(401));
 			
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		}*/
 		
 		//new Stored(chunkData[1], Integer.parseInt(chunkData[2]), Integer.parseInt(chunkData[3]));
 

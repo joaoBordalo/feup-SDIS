@@ -136,7 +136,8 @@ public class ServicesMenu extends JFrame {
 		String content=null;
 		String[] parsedContent= new String[5];
 		while ((content = reader.readLine()) != null)
-		{
+		{	if(content.equals("\n"))
+				break;
 			parsedContent=content.split(" ");
 			BackupFile backupFile= new BackupFile(parsedContent[0],Integer.parseInt(parsedContent[1]),Integer.parseInt(parsedContent[2]),Float.parseFloat(parsedContent[3]),Boolean.parseBoolean(parsedContent[4]));
 			backupedfilesList.add(backupFile);
