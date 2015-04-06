@@ -35,18 +35,18 @@ public class MSock {
 	public void send(String msg) throws IOException
 	{
 		
-		DatagramPacket msgPacket = new DatagramPacket(msg.getBytes(),
-				msg.getBytes().length, mAddress, mPort);
+		DatagramPacket msgPacket = new DatagramPacket(msg.trim().getBytes(),
+				msg.trim().getBytes().length, mAddress, mPort);
 		
 		sendSocket.send(msgPacket);
 		
-		System.out.println("enviei:" +msg);
+		//System.out.println("enviei:" +msg);
 	}
 	
 	public PacketInfo receive() throws IOException
 	{
 		
-        byte[] buf = new byte[1024];
+        byte[] buf = new byte[64100];
 
 		DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
         receiveSocket.receive(msgPacket);

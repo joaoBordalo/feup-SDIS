@@ -17,10 +17,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.net.URL;
 import java.util.Vector;
-import java.util.concurrent.Executor;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
+
 
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JTextField;
@@ -67,7 +67,7 @@ public class ConfigurationMenu extends JFrame {
 	 */
 	public ConfigurationMenu() {
 		
-		this.executor= Executors.newFixedThreadPool(5);
+		this.executor= Executors.newFixedThreadPool(8);
 
 		setTitle("Service Configuration");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -122,7 +122,7 @@ public class ConfigurationMenu extends JFrame {
 		contentPane.add(lblServiceConfiguration);
 
 		Label label = new Label("BROADCAST IP");
-		label.setBounds(229, 21, 81, 22);
+		label.setBounds(229, 21, 100, 22);
 		contentPane.add(label);
 
 		Label label_1 = new Label("PORT");

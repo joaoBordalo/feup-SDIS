@@ -9,7 +9,7 @@ public class PacketInfo {
 	private int senderPort;
 	
 	public String getMessage() {
-		return message;
+		return message.trim();
 	}
 
 	public void setMessage(String message) {

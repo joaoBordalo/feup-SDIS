@@ -2,7 +2,7 @@ package threads;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
+
 
 import comSystem.MSock;
 import commands.PutChunk;
@@ -15,20 +15,22 @@ public class SendFileThread implements Runnable{
 	private MSock MC;
 	private int windowTime;
 	private String body;
+	private int i;
 
-	public SendFileThread(Backup bc, MSock MDB, MSock MC, String body)
+	public SendFileThread(Backup bc, MSock MDB, MSock MC, String body, int i)
 	{
 		this.bc=bc;
 		this.MDB=MDB;
 		this.windowTime=500;
 		this.body=body;
+		this.i=i;
 	}
 	@Override
 	public void run() {
 
-		for(int i=0; i<bc.getNchunks();i++)
+		//for(int i=0; i<bc.getNchunks();i++)
 		{
-			for(int j=0;j<6;j++)
+			
 			{
 
 
@@ -45,10 +47,6 @@ public class SendFileThread implements Runnable{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
-
-
-
 
 			}
 		}

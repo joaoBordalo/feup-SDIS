@@ -18,7 +18,7 @@ private String message;
 
 	public Chunk(String ver, String fId, int chunkN, String body )
 	{
-		message = new Header("CHUNK", ver, fId, chunkN).getHeaderMsgS() + "\n\r" + body;
+		message = new Header("CHUNK", ver, fId, chunkN).getHeaderMsgS() + body;
 		
 	}
 

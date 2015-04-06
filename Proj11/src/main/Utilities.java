@@ -1,5 +1,7 @@
 package main;
 
+import java.io.File;
+
 public class Utilities {
 	
 	/*
@@ -14,5 +16,20 @@ public class Utilities {
 	    }
 	    return new String(out);
 	}
+	
+	public static boolean deleteDirectoryFiles(File inc) {
+        if( inc.exists() ) {
+            File[] files = inc.listFiles();
+            for(int i=0; i<files.length; i++) {
+                if(files[i].isDirectory()) {
+                    deleteDirectoryFiles(files[i]);
+                }
+                else {
+                    files[i].delete();
+                }
+            }
+        }
+        return( inc.delete() );
+    }
 
 }

@@ -23,7 +23,7 @@ public class PutChunk {
 		//System.out.println("body byte: " +body);
 		
 		//System.out.println("body string: " + new String(body));
-		message = new Header("PUTCHUNK", ver, fId, chunkN, repDegree).getHeaderMsgS() + "\n\r" + body;
+		message = new Header("PUTCHUNK", ver, fId, chunkN, repDegree).getHeaderMsgS()+ body;
 		
 	}
 

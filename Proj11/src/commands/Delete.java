@@ -16,9 +16,9 @@ private String message;
 		this.message = message;
 	}
 
-	public Delete(String ver, String fId, int chunkN)
+	public Delete(String ver, String fId)
 	{
-		message = new Header("DELETE", ver, fId).getHeaderMsgS() + "\n\r";
+		message = new Header("DELETE", ver, fId).getHeaderMsgS();
 		
 	}
 

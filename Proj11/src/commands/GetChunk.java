@@ -18,7 +18,7 @@ public class GetChunk {
 
 	public GetChunk(String ver, String fId, int chunkN)
 	{
-		message = new Header("GETCHUNK", ver, fId, chunkN).getHeaderMsgS() + "\n\r";
+		message = new Header("GETCHUNK", ver, fId, chunkN).getHeaderMsgS() ;
 		
 	}
 

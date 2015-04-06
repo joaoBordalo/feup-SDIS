@@ -13,13 +13,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
+
 
 import threads.SendFileThread;
-import main.Peer;
+
 import main.Utilities;
-import comSystem.MSock;
-import commands.PutChunk;
+
+
 
 public class Backup {
 
@@ -52,7 +52,7 @@ public class Backup {
 
 		int length=64*1000;
 		byte [] chunk = new byte [length];
-		//nchunks=  (int) Math.ceil((file)/length))+1;
+		nchunks=  (int) Math.ceil((file.length())/length)+1;
 		System.out.println("nchunks" + nchunks);
 		chunks=new ArrayList<byte[]>();
 		int it =0;
@@ -60,12 +60,18 @@ public class Backup {
 		
 		while(file.read(chunk)!=-1)
 		{
-			//file.seek(length*(it+1));
-			System.out.println(it);
+			file.seek(length*(it+1));
+			//System.out.println(it);
 		//	System.out.println("chunks vector:" + chunks.size());
 			
 			SendFileThread sendThread = new SendFileThread(Backup.this, backupM.getPreviousMenu().getConfigsMenu().peer.getMDB(),
-					backupM.getPreviousMenu().getConfigsMenu().peer.getMC(), new String(chunk));
+					backupM.getPreviousMenu().getConfigsMenu().peer.getMC(), new String(chunk), it);
+			try {
+				Thread.sleep(75);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			backupM.getPreviousMenu().getConfigsMenu().executor.execute(sendThread);
 			//chunks.add(chunk);
 			//System.out.println("chunks vector at " +it + chunks.get(it).toString());

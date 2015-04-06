@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import java.security.NoSuchAlgorithmException;
+
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -22,12 +22,11 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import main.Peer;
-import commands.PutChunk;
+
 import protocols.Backup;
-import threads.PutChunkThread;
+
 import threads.ReceiveStoredThread;
-import threads.SendFileThread;
+
 
 
 

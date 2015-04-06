@@ -3,6 +3,8 @@ package gui;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
@@ -11,6 +13,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import commands.Delete;
+import main.Utilities;
+import main.Utilities.*;
 
 @SuppressWarnings("serial")
 public class DeleteMenu extends JFrame {
@@ -67,6 +73,27 @@ public class DeleteMenu extends JFrame {
 				previousMenu.setEnabled(true);
 				previousMenu.setVisible(true);
 				selectedDeletedFile = deletedFiles[comboBox.getSelectedIndex()];
+				
+				
+				
+				for(int i=0; i<previousMenu.getBackupedfilesList().size() ;i++)
+				{
+					if(selectedDeletedFile.equals(previousMenu.getBackupedfilesList().get(i)));
+					{
+						String delete = new Delete("1.0", previousMenu.getBackupedfilesList().get(i).getFileId()).getMessageS();
+						
+						try {
+							previousMenu.getConfigsMenu().peer.getMC().send(delete);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						//Utilities.deleteDirectoryFiles(new File(previousMenu.getBackupedfilesList().get(i).getFileId()));
+						//break;
+					}
+				}
+				
+				
 			}
 		});
 		btnDelete.setBounds(236, 146, 89, 23);

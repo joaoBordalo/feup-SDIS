@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import threads.DeleteThread;
 import threads.PutChunkThread;
 
 import java.awt.event.ActionListener;
@@ -48,6 +49,8 @@ public class ServicesMenu extends JFrame {
 		
 		PutChunkThread putChunk = new PutChunkThread(configsMenu.peer.getMDB(), configsMenu.peer.getMC());
 		configsMenu.executor.execute(putChunk);
+		DeleteThread deleteThread = new DeleteThread(configsMenu.peer.getMC());
+		configsMenu.executor.execute(deleteThread);
 		
 
 		setTitle("BackUP Services");

@@ -5,17 +5,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Random;
 
+
+
+import main.Utilities;
 import comSystem.MSock;
 import comSystem.PacketInfo;
 import commands.Stored;
-import main.*;
+
 
 // objective: listens the MDB or MDR channels to get chunks
 public class PutChunkThread implements Runnable{
@@ -39,10 +40,11 @@ public class PutChunkThread implements Runnable{
 			while(true)
 			{
 				PacketInfo message = MDB.receive();
-				if(!message.getSenderIp().getHostAddress().equals(InetAddress.getLocalHost().getHostAddress()))
+			/*	if(!message.getSenderIp().getHostAddress().equals(InetAddress.getLocalHost().getHostAddress()))
 				{
-					parseMessage(message.getMessage());
-				}
+					
+				}*/
+				parseMessage(message.getMessage());
 			}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -62,8 +64,8 @@ public class PutChunkThread implements Runnable{
 		int headerEnd = msg.indexOf("\r\n");
 		//int bodyStart = msg.lastIndexOf("\r\n");
 
-		String subs = msg.substring(0,headerEnd).trim();
-		String subsbody = msg.substring(headerEnd+1).trim();
+		String subs = msg.substring(0,headerEnd);
+		String subsbody = msg.substring(headerEnd+4);
 		//System.out.println("header end: "+ headerEnd);
 		//System.out.println("body start: "+ (headerEnd+1));
 
@@ -88,9 +90,9 @@ public class PutChunkThread implements Runnable{
 		switch (tokens[0]) {
 		case "PUTCHUNK":
 			SaveChunk(tokens, subsbody);
-
 			break;
 
+		
 		default:
 			break;
 		}
@@ -98,7 +100,13 @@ public class PutChunkThread implements Runnable{
 
 	public void SaveChunk(String [] msgHeader, String Body)
 	{
-		File newFile = new File(msgHeader[2]+"."+ msgHeader[3]); //file id no [2] e chunkno no [3]
+		File dir= new File(msgHeader[2]);
+		
+		if(!dir.exists())
+		{
+			dir.mkdir();
+		}
+		File newFile = new File(msgHeader[2]+ '\\' +msgHeader[2]+"."+ msgHeader[3]); //file id no [2] e chunkno no [3]
 		RandomAccessFile out;
 
 

@@ -18,7 +18,7 @@ private String message;
 
 	public Stored(String ver, String fId, int chunkN)
 	{
-		message = new Header("STORED", ver, fId, chunkN).getHeaderMsgS() + "\n\r";
+		message = new Header("STORED", ver, fId, chunkN).getHeaderMsgS();
 		
 	}
 
